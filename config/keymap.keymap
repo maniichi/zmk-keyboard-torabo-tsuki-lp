@@ -66,7 +66,7 @@
         };
     };
 
-    /* スクロール用リスナー */
+/* スクロール用リスナー */
     scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
