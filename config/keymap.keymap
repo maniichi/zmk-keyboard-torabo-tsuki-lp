@@ -7,15 +7,9 @@
 #include <dt-bindings/zmk/input_transform.h>
 
 / {
-    /* 1. 条件分岐用の定義を自作する（名前エラーを回避するため） */
-    zip_layer_3: zip_layer_3 {
-        compatible = "zmk,input-processor-layer-limit";
-        #input-processor-cells = <0>;
-        limit-layers = <3>;
-    };
+    /* 前回の自作定義（zip_layer_3）はエラーの元なので削除しました */
 
     combos {
-        /* ... 省略（既存のままでOK） ... */
         compatible = "zmk,combos";
         bt_clear {
             bindings = <&bt BT_CLR>;
@@ -25,25 +19,33 @@
     };
 
     keymap {
-        /* ... 省略（既存のレイヤー定義をそのまま貼り付けてください） ... */
+        /* ここは既存のレイヤー定義をそのまま維持してください */
         compatible = "zmk,keymap";
-        /* (layer_0 〜 layer_3 の中身をここに配置) */
+        /* ... layer_0 〜 layer_3 の中身 ... */
     };
 
-    /* 2. スクロール用リスナー */
-    scroll_listener: scroll_listener {
+    /* * 【重要】レイヤー制限（layers = <3>;）が使える可能性がある 
+     * 標準の input-listener binding を使わず、
+     * 最もシンプルな構成で記述します。
+     */
+    scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        input-processors = 
-            <&zip_layer_3>,              /* 自作のLayer 3判定を使用 */
-            <&zip_xy_scaler 1 20>, 
-            <&zip_xy_to_scroll_mapper>;
+        input-processors = <&zip_xy_scaler 1 20>, <&zip_xy_to_scroll_mapper>;
     };
 };
 
-/* 3. 移動用リスナーの上書き（Layer 3で止める） */
+/* * ここで「レイヤー制限」をかけます。
+ * listener プロパティではなく、ZMKの「一括適用」の仕組みを使います。
+ */
+&scroll_listener {
+    /* これでお使いの環境が「layers」をプロパティとして持っていれば通ります */
+    /* もしこれで「layersが無い」とエラーが出る場合は、この1行を消せば「全レイヤーでスクロール」になります */
+    layers = <3>; 
+};
+
 &trackball_listener {
-    /* Layer 3 のときだけ無効化するプロパティが使えない場合、
-       ここを空にするか、反転設定のみに留めることでビルドを通します。 */
+    /* Layer 3 のときは移動を止める（もしエラーが出るならこの &trackball_listener 枠ごと消してください） */
+    exclude-layers = <3>;
     input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
 };
