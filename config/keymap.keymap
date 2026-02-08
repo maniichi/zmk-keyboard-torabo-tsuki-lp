@@ -20,11 +20,11 @@
 
         layer_0 {
             bindings = <
-&none       &none             &none       &none  &none  &none                                                             &none        &none        &none             &none             &none                 &none
-&kp ESCAPE  &kp Q             &kp W       &kp E  &kp R  &kp T                                                             &kp Y        &kp U        &kp I             &kp O             &kp P                 &kp BSPC
-&kp TAB     &lt 1 A           &lt 3 S     &kp D  &kp F  &kp G                   &none                   &none             &kp H        &kp J        &kp K             &kp L             &kp SEMI              &kp RETURN
-&kp LSHFT   &mt LEFT_SHIFT Z  &kp X       &kp C  &kp V  &kp B                   &kp RETURN              &kp ESCAPE        &kp N        &kp M        &kp COMMA         &kp DOT           &mt RIGHT_SHIFT FSLH  &kp MINUS
-&kp LCTRL   &kp LEFT_ALT      &kp DELETE  &none  &none  &mt LEFT_COMMAND LANG2  &mt LEFT_CONTROL SPACE  &kp LEFT_COMMAND  &lt 2 ENTER  &lt 1 LANG1  &kp LEFT_COMMAND  &kp LEFT_CONTROL  &kp LEFT_ALT          &kp DELETE
+&none       &none             &none       &none  &none  &none                                                  &none        &none        &none             &none             &none                 &none
+&kp ESCAPE  &kp Q             &kp W       &kp E  &kp R  &kp T                                                  &kp Y        &kp U        &kp I             &kp O             &kp P                 &kp BSPC
+&kp TAB     &lt 1 A           &lt 3 S     &kp D  &kp F  &kp G                   &none        &none             &kp H        &kp J        &kp K             &kp L             &kp SEMI              &kp RETURN
+&kp LSHFT   &mt LEFT_SHIFT Z  &kp X       &kp C  &kp V  &kp B                   &kp RETURN   &kp ESCAPE        &kp N        &kp M        &kp COMMA         &kp DOT           &mt RIGHT_SHIFT FSLH  &kp MINUS
+&kp LCTRL   &kp LEFT_ALT      &kp DELETE  &none  &none  &mt LEFT_COMMAND LANG2  &lt 2 SPACE  &kp LEFT_COMMAND  &lt 2 ENTER  &lt 1 LANG1  &kp LEFT_COMMAND  &kp LEFT_CONTROL  &kp LEFT_ALT          &kp DELETE
             >;
         };
 
@@ -58,14 +58,16 @@
             >;
         };
     };
+
     /* Layer 3 スクロール用リスナー */
+
     scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
         layers = <3>; /* Layer 3 でのみ有効 */
-        
         /* XY入力をスクロール（ホイール）に変換 */
         /* 1 20 は感度調整（2つ目の値を大きくすると遅くなる） */
+
         input-processors = <&zip_xy_scaler 1 20>, <&zip_xy_to_scroll_mapper>;
     };
 };
