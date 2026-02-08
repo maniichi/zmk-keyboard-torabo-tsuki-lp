@@ -60,14 +60,17 @@
     };
 
     /* Layer 3 スクロール用リスナー */
-
     scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        layers = <3>; /* Layer 3 でのみ有効 */
-        /* XY入力をスクロール（ホイール）に変換 */
-        /* 1 20 は感度調整（2つ目の値を大きくすると遅くなる） */
-
-        input-processors = <&zip_xy_scaler 1 20>, <&zip_xy_to_scroll_mapper>;
+        
+        /* 'layers =' を削除し、input-processors の中でレイヤー制限をかけます */
+        input-processors = 
+            /* Layer 3 以外ではこの処理をスキップする */
+            <&zip_temp_layer_nr 3>, 
+            /* スクロール速度の調整（20で割る） */
+            <&zip_xy_scaler 1 20>, 
+            /* マウス移動をスクロールに変換 */
+            <&zip_xy_to_scroll_mapper>;
     };
 };
