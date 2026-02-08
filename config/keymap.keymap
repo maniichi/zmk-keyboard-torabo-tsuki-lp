@@ -7,8 +7,6 @@
 #include <dt-bindings/zmk/input_transform.h>
 
 / {
-    /* 前回の自作定義（zip_layer_3）はエラーの元なので削除しました */
-
     combos {
         compatible = "zmk,combos";
         bt_clear {
@@ -19,15 +17,50 @@
     };
 
     keymap {
-        /* ここは既存のレイヤー定義をそのまま維持してください */
         compatible = "zmk,keymap";
-        /* ... layer_0 〜 layer_3 の中身 ... */
+
+        layer_0 {
+            bindings = <
+&none       &none             &none       &none  &none  &none                                                  &none        &none        &none             &none             &none                 &none
+&kp ESCAPE  &kp Q             &kp W       &kp E  &kp R  &kp T                                                  &kp Y        &kp U        &kp I             &kp O             &kp P                 &kp BSPC
+&kp TAB     &lt 1 A           &lt 3 S     &kp D  &kp F  &kp G                   &none        &none             &kp H        &kp J        &kp K             &kp L             &kp SEMI              &kp RETURN
+&kp LSHFT   &mt LEFT_SHIFT Z  &kp X       &kp C  &kp V  &kp B                   &kp RETURN   &kp ESCAPE        &kp N        &kp M        &kp COMMA         &kp DOT           &mt RIGHT_SHIFT FSLH  &kp MINUS
+&kp LCTRL   &kp LEFT_WIN      &kp LALT    &none  &none  &lt 2 SPACE             &lt 2 SPACE  &kp LEFT_SHIFT    &kp SPACE    &none        &none             &kp RALT          &kp RIGHT_WIN         &kp RCTRL
+            >;
+        };
+
+        layer_1 {
+            bindings = <
+&none   &none   &none   &none   &none   &none                   &none   &none   &none   &none   &none   &none
+&trans  &kp N1  &kp N2  &kp N3  &kp N4  &kp N5                  &kp N6  &kp N7  &kp N8  &kp N9  &kp N0  &kp BSPC
+&trans  &trans  &trans  &trans  &trans  &trans  &none   &none   &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &none   &none   &trans  &trans  &trans  &trans  &none   &none   &trans  &trans  &trans
+            >;
+        };
+
+        layer_2 {
+            bindings = <
+&none   &none   &none   &none   &none   &none                   &none   &none   &none   &none   &none   &none
+&trans  &kp F1  &kp F2  &kp F3  &kp F4  &kp F5                  &kp F6  &kp F7  &kp F8  &kp F9  &kp F10 &kp F11
+&trans  &trans  &trans  &trans  &trans  &trans  &none   &none   &trans  &trans  &trans  &trans  &kp F12 &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &none   &none   &trans  &trans  &trans  &trans  &none   &none   &trans  &trans  &trans
+            >;
+        };
+
+        layer_3 {
+            bindings = <
+&none   &none   &none   &none         &none         &none                                   &none   &none           &none           &none            &none   &none
+&trans  &trans  &trans  &trans        &trans        &trans                          &trans  &trans          &trans          &trans           &trans  &trans
+&trans  &trans  &trans  &mkp RCLK     &mkp LCLK     &trans      &none       &none   &trans  &mkp LCLK       &kp UP_ARROW    &mkp RCLK        &trans  &trans
+&trans  &trans  &trans  &out OUT_USB  &out OUT_BLE  &bt BT_PRV  &bt BT_NXT  &trans  &trans  &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &trans  &trans
+&trans  &trans  &trans  &none         &none         &trans      &trans      &trans  &trans  &trans          &trans          &trans           &trans  &trans
+            >;
+        };
     };
 
-    /* * 【重要】レイヤー制限（layers = <3>;）が使える可能性がある 
-     * 標準の input-listener binding を使わず、
-     * 最もシンプルな構成で記述します。
-     */
+    /* スクロール用設定。エラー回避のため &を使わずにここに直書きします */
     scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
@@ -35,17 +68,7 @@
     };
 };
 
-/* * ここで「レイヤー制限」をかけます。
- * listener プロパティではなく、ZMKの「一括適用」の仕組みを使います。
- */
-&scroll_listener {
-    /* これでお使いの環境が「layers」をプロパティとして持っていれば通ります */
-    /* もしこれで「layersが無い」とエラーが出る場合は、この1行を消せば「全レイヤーでスクロール」になります */
-    layers = <3>; 
-};
-
+/* 既存の移動設定の上書き（エラーが出やすいlayersプロパティは一旦使わずにビルドを通します） */
 &trackball_listener {
-    /* Layer 3 のときは移動を止める（もしエラーが出るならこの &trackball_listener 枠ごと消してください） */
-    exclude-layers = <3>;
     input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
 };
