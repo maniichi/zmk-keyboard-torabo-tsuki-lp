@@ -59,24 +59,28 @@
         };
     };
 
-    /* 1. スクロール専用のリスナーを定義（レイヤー制限はここでは書かない） */
+    /* スクロール用リスナーの定義 */
     scroll_listener: scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        input-processors = <&zip_xy_scaler 1 20>, <&zip_xy_to_scroll_mapper>;
+        input-processors = 
+            /* 1. Layer 3(0x03) 以外なら、この先の処理を中断する */
+            <&zip_layer_intermediate 0x03>, 
+            /* 2. スクロール速度の調整（1/20に減速） */
+            <&zip_xy_scaler 1 20>, 
+            /* 3. 移動をスクロールに変換 */
+            <&zip_xy_to_scroll_mapper>;
     };
 };
-/* 2. リスナーの有効・無効を「レイヤー」によって切り替える設定 */
-
-/* デフォルトの挙動（カーソル移動）の設定 */
+/* * デフォルトの移動リスナー（trackball_listener）の設定を上書き 
+ * Layer 3 では移動を止めるようにします。
+ * 標準機能では layers プロパティが使えないため、
+ * ここでも zip_layer_intermediate を使って「Layer 3 以外」を条件にします。
+ */
 &trackball_listener {
-    /* Layer 3 にいる時だけ、この「移動リスナー」を無効にする */
-    exclude-layers = <3>; 
-};
-
-/* 新しく作った「スクロールリスナー」の設定 */
-&scroll_listener {
-    /* Layer 3 にいる時だけ、この「スクロールリスナー」を有効にする */
-    status = "okay";
-    include-layers = <3>;
+    input-processors = 
+        /* 0x03 (Layer 3) ではないときだけ実行 */
+        /* ZMK公式では「特定のレイヤー以外」を指定するのが難しいため、 */
+        /* もしLayer 3でカーソルも一緒に動いても良い場合は、以下の1行は削除してもビルドは通ります */
+        <&zip_layer_intermediate 0x00>; 
 };
