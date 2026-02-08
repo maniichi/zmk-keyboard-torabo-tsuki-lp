@@ -59,17 +59,10 @@
         };
     };
 
-    /* Layer 3 スクロール用リスナー */
-    scroll_listener {
+    /* 1. スクロール専用のリスナーを定義（レイヤー制限はここでは書かない） */
+    scroll_listener: scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        
-        input-processors = 
-            /* Layer 3 以外での入力を無視（カット）する */
-            <&zip_layer_nr_type_2 3>, 
-            /* スクロール感度の調整（1/20に減速） */
-            <&zip_xy_scaler 1 20>, 
-            /* マウス移動をスクロールに変換 */
-            <&zip_xy_to_scroll_mapper>;
+        input-processors = <&zip_xy_scaler 1 20>, <&zip_xy_to_scroll_mapper>;
     };
 };
