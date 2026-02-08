@@ -7,12 +7,6 @@
 #include <dt-bindings/zmk/input_transform.h>
 
 / {
-    /* ラベルが使えないため、ここで「レイヤー3限定」という機能を自分で定義します */
-    zip_l3: zip_l3 {
-        compatible = "zmk,input-processor-layer-limit";
-        #input-processor-cells = <1>;
-    };
-
     combos {
         compatible = "zmk,combos";
         bt_clear {
@@ -66,21 +60,19 @@
         };
     };
 
-/* スクロール用リスナー */
+    /* 1. スクロール専用リスナー */
+    /* ここに直接 layers = <3>; と書くのがZMKの標準的な「レイヤー限定」方法です */
     scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        input-processors = 
-            <&zip_l3 3>,                 /* 自作した判定機能でレイヤー3を指定 */
-            <&zip_xy_scaler 1 20>, 
-            <&zip_xy_to_scroll_mapper>;
+        layers = <3>; 
+        input-processors = <&zip_xy_scaler 1 20>, <&zip_xy_to_scroll_mapper>;
     };
 };
 
-/* 移動用リスナーの上書き */
+/* 2. 既存の移動リスナーの上書き */
 &trackball_listener {
-    input-processors = 
-        /* エラーを避けるため、一旦レイヤー制限をかけずに「反転のみ」にします */
-        /* これでビルドを通し、まずはスクロールがレイヤー3限定になるか確認しましょう */
-        <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
+    /* Layer 3 のときはこのリスナー（移動）を無効化する */
+    exclude-layers = <3>;
+    input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
 };
