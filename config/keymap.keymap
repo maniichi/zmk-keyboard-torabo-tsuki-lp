@@ -64,11 +64,10 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
         
-        /* 'layers =' を削除し、input-processors の中でレイヤー制限をかけます */
         input-processors = 
-            /* Layer 3 以外ではこの処理をスキップする */
-            <&zip_temp_layer_nr 3>, 
-            /* スクロール速度の調整（20で割る） */
+            /* Layer 3 以外での入力を無視（カット）する */
+            <&zip_layer_nr_type_2 3>, 
+            /* スクロール感度の調整（1/20に減速） */
             <&zip_xy_scaler 1 20>, 
             /* マウス移動をスクロールに変換 */
             <&zip_xy_to_scroll_mapper>;
