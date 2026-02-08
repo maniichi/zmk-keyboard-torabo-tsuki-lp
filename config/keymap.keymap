@@ -9,7 +9,6 @@
 / {
     combos {
         compatible = "zmk,combos";
-
         bt_clear {
             bindings = <&bt BT_CLR>;
             key-positions = <28 29>;
@@ -26,33 +25,33 @@
 &kp ESCAPE  &kp Q             &kp W       &kp E  &kp R  &kp T                                                  &kp Y        &kp U        &kp I             &kp O             &kp P                 &kp BSPC
 &kp TAB     &lt 1 A           &lt 3 S     &kp D  &kp F  &kp G                   &none        &none             &kp H        &kp J        &kp K             &kp L             &kp SEMI              &kp RETURN
 &kp LSHFT   &mt LEFT_SHIFT Z  &kp X       &kp C  &kp V  &kp B                   &kp RETURN   &kp ESCAPE        &kp N        &kp M        &kp COMMA         &kp DOT           &mt RIGHT_SHIFT FSLH  &kp MINUS
-&kp LCTRL   &kp LEFT_ALT      &kp DELETE  &none  &none  &mt LEFT_COMMAND LANG2  &lt 2 SPACE  &kp LEFT_COMMAND  &lt 2 ENTER  &lt 1 LANG1  &kp LEFT_COMMAND  &kp LEFT_CONTROL  &kp LEFT_ALT          &kp DELETE
+&kp LCTRL   &kp LEFT_WIN      &kp LALT    &none  &none  &lt 2 SPACE             &lt 2 SPACE  &kp LEFT_SHIFT    &kp SPACE    &none        &none             &kp RALT          &kp RIGHT_WIN         &kp RCTRL
             >;
         };
 
         layer_1 {
             bindings = <
-&none   &none   &none                   &none      &none               &none                                    &none   &none           &none           &none      &none    &none
-&trans  &kp F1  &kp F2                  &kp F3     &kp F4              &kp F5                                   &kp F6  &kp F7          &kp F8          &kp F9     &kp F10  &kp F11
-&trans  &trans  &kp LA(LG(LEFT_ARROW))  &mkp RCLK  &mkp LCLK           &kp LA(LG(RIGHT_ARROW))  &none   &none   &trans  &mkp LCLK       &kp UP_ARROW    &mkp RCLK  &trans   &kp F12
-&trans  &trans  &trans                  &kp LG(R)  &kp LG(LEFT_ARROW)  &kp LG(RIGHT_ARROW)      &trans  &trans  &trans  &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT  &trans   &trans
-&trans  &trans  &trans                  &none      &none               &trans                   &trans  &trans  &trans  &trans          &trans          &trans     &trans   &trans
+&none   &none   &none   &none   &none   &none                   &none   &none   &none   &none   &none   &none
+&trans  &kp N1  &kp N2  &kp N3  &kp N4  &kp N5                  &kp N6  &kp N7  &kp N8  &kp N9  &kp N0  &kp BSPC
+&trans  &trans  &trans  &trans  &trans  &trans  &none   &none   &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &none   &none   &trans  &trans  &trans  &trans  &none   &none   &trans  &trans  &trans
             >;
         };
 
         layer_2 {
             bindings = <
-&none           &none            &none              &none                 &none                  &none                       &none         &none         &none         &none        &none              &none
-&trans          &kp EXCLAMATION  &kp DOUBLE_QUOTES  &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp LS(N5)                  &kp N7        &kp N8        &kp N9        &kp TILDE    &kp CARET          &kp BACKSLASH
-&kp ASTERISK    &kp DOLLAR       &kp SQT            &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp N5      &none   &none   &kp NUMBER_4  &kp N5        &kp NUMBER_6  &kp AT_SIGN  &kp COLON          &kp RETURN
-&kp LEFT_SHIFT  &kp PERCENT      &kp N7             &kp N8                &kp N9                 &kp N0      &trans  &trans  &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp HASH     &kp LG(BACKSLASH)  &kp UNDERSCORE
-&trans          &trans           &trans             &none                 &none                  &trans      &trans  &trans  &trans        &trans        &kp N0        &kp PERIOD   &trans             &trans
+&none   &none   &none   &none   &none   &none                   &none   &none   &none   &none   &none   &none
+&trans  &kp F1  &kp F2  &kp F3  &kp F4  &kp F5                  &kp F6  &kp F7  &kp F8  &kp F9  &kp F10 &kp F11
+&trans  &trans  &trans  &trans  &trans  &trans  &none   &none   &trans  &trans  &trans  &trans  &kp F12 &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &none   &none   &trans  &trans  &trans  &trans  &none   &none   &trans  &trans  &trans
             >;
         };
 
         layer_3 {
             bindings = <
-&none   &none   &none   &none         &none         &none                           &none   &none           &none           &none            &none   &none
+&none   &none   &none   &none         &none         &none                                   &none   &none           &none           &none            &none   &none
 &trans  &trans  &trans  &trans        &trans        &trans                          &trans  &trans          &trans          &trans           &trans  &trans
 &trans  &trans  &trans  &mkp RCLK     &mkp LCLK     &trans      &none       &none   &trans  &mkp LCLK       &kp UP_ARROW    &mkp RCLK        &trans  &trans
 &trans  &trans  &trans  &out OUT_USB  &out OUT_BLE  &bt BT_PRV  &bt BT_NXT  &trans  &trans  &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &trans  &trans
@@ -60,25 +59,23 @@
             >;
         };
     };
-    /* マウス移動（デフォルト）の設定上書き */
-    &trackball_listener {
-        input-processors = 
-            /* Layer 3(0x03) では、この先の処理を中断（移動を停止）させる */
-            <&zip_layer_intermediate 0x03>,
-            /* ここに元々の移動用プロセッサがあれば記述（例：反転設定など） */
-            <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
-    };
 
-    /* スクロール用リスナーの定義 */
+    /* スクロール用リスナーの定義を / { } の中に置く */
     scroll_listener: scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
         input-processors = 
-            /* 1. Layer 3(0x03) でないなら、この先の処理を中断する */
-            <&zip_layer_intermediate 0x03>, 
-            /* 2. スクロール速度の調整（1/20に減速） */
+            <&zip_layer_intermediate 3>, 
             <&zip_xy_scaler 1 20>, 
-            /* 3. 移動をスクロールに変換 */
             <&zip_xy_to_scroll_mapper>;
     };
+}; /* ここで / ルートを閉じる */
+
+/* 既存のトラックボール移動リスナーへの上書き設定（ / の外側） */
+&trackball_listener {
+    input-processors = 
+        /* Layer 3(0x03) では、この先の処理を中断（移動を停止）させる */
+        <&zip_layer_intermediate 3>,
+        /* デフォルトの反転設定を維持 */
+        <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
 };
