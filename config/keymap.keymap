@@ -64,11 +64,19 @@
     scroll_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        input-processors = <&zip_xy_scaler 1 20>, <&zip_xy_to_scroll_mapper>;
+        input-processors = 
+            /* Layer 3(0x03) でないなら、これ以降の処理（スクロール）を中断する */
+            <&zip_layer_intermediate 3>, 
+            <&zip_xy_scaler 1 20>, 
+            <&zip_xy_to_scroll_mapper>;
     };
 };
 
-/* 既存の移動設定の上書き（エラーが出やすいlayersプロパティは一旦使わずにビルドを通します） */
+/* 既存の移動用リスナーを上書きして、Layer 3の時に移動を止める */
 &trackball_listener {
-    input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
+    input-processors = 
+        /* Layer 3(0x03) の時だけ、これ以降の処理（移動）を中断する */
+        /* これがお使いの環境で動作しない場合はエラーになります */
+        <&zip_layer_intermediate 3>,
+        <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
 };
