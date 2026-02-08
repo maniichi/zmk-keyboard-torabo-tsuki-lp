@@ -66,3 +66,17 @@
         input-processors = <&zip_xy_scaler 1 20>, <&zip_xy_to_scroll_mapper>;
     };
 };
+/* 2. リスナーの有効・無効を「レイヤー」によって切り替える設定 */
+
+/* デフォルトの挙動（カーソル移動）の設定 */
+&trackball_listener {
+    /* Layer 3 にいる時だけ、この「移動リスナー」を無効にする */
+    exclude-layers = <3>; 
+};
+
+/* 新しく作った「スクロールリスナー」の設定 */
+&scroll_listener {
+    /* Layer 3 にいる時だけ、この「スクロールリスナー」を有効にする */
+    status = "okay";
+    include-layers = <3>;
+};
